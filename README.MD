@@ -1,6 +1,6 @@
 <h1 align="center">✨ Cluster Kubernetes com OKE na OCI </h1>
 
-Este repositório contém os arquivos de `terraform` utilizados para criação e gerenciamento de um cluster `kuberentes`, utlizando o `OKE` 
+Este repositório contém os arquivos de `terraform` utilizados para criação e gerenciamento de um cluster `kubernetes`, utlizando o `OKE` 
 da `OCI`, da minha conta pessoal utilizada para estudos.
 
 ## Sumário
@@ -26,19 +26,19 @@ Por motivos de padronização em meus projetos pessoais, esse repositório está
 - `terraform` instalado
 - `kubect` instalado
 - `oci cli` instalada e configurada
-- ter um `API Key` criada na OCI
+- ter um `API Key` criado na OCI
 - conta na `AWS` e variavéis `access key`/`secret key`/`region` exportadas na shell em execução para armazenamento do `tfstate`, caso estiver utilizando o `s3` como `backend` (opcional)
 - definir as variáveis necessárias para login e para alocação dos recursos, conforme tabela abaixo:
 
-| Variável            | Descrição                                                           | Autenticação | Alocação |
-| :-----------------: | :------------------------------------------------------------------ | :----------: | :------: |
-| tenancy_ocid        | identificação única da conta                                        | ✅           | ❌       |
-| user_ocid           | usuário que está aplicando o terraform                              | ✅           | ❌       |
-| fingerprint         | assinatura compatível com a `API Key`                               | ✅           | ❌       |
-| private_key_path    | caminho da chave privada compatível com a `API Key`                 | ✅           | ❌       |
-| region              | região utilizada para declaração do provider e alocação de recursos | ✅           | ✅       |
-| compartment_ocid    | compartimento utilizado para alocação dos recursos                  | ❌           | ✅       |
-| availability_domain | domínio de disponibilidade utilizado para alocação dos recursos     | ❌           | ✅       |
+| Variável            | Descrição                                                             | Autenticação | Alocação |
+| :-----------------: | :-------------------------------------------------------------------- | :----------: | :------: |
+| tenancy_ocid        | identificação única da conta                                          | ✅           | ❌       |
+| user_ocid           | usuário que está aplicando o `terraform`                              | ✅           | ❌       |
+| fingerprint         | assinatura compatível com a `API Key`                                 | ✅           | ❌       |
+| private_key_path    | caminho da chave privada compatível com a `API Key`                   | ✅           | ❌       |
+| region              | região utilizada para declaração do `provider` e alocação de recursos | ✅           | ✅       |
+| compartment_ocid    | compartimento utilizado para alocação dos recursos                    | ❌           | ✅       |
+| availability_domain | domínio de disponibilidade utilizado para alocação dos recursos       | ❌           | ✅       |
 
 Para definir as variáveis, estou utilizando o arquivo `terraform.tfvars`.
 Exemplo de conteúdo do arquivo `terraform.tfvars`:
@@ -57,10 +57,10 @@ availability_domain = "CyEp:SA-SAOPAULO-1-AD-1"
 
 ## Infraestrutura
 
-O `terraform` atual provisiona um cluster `kubernetes`, utilizando o serviço de `kubernetes` gerenciado da oracle (`OKE`), com 4 `worker nodes` utilizando arquitetura `ARM`, expoẽ publicamente o `endpoint` do `API server` através de um `IP` fixo.
+O `terraform` atual provisiona um cluster `kubernetes`, utilizando o serviço de `kubernetes` gerenciado da oracle (`OKE`), com 4 `worker nodes` utilizando arquitetura `ARM`, e expoẽ publicamente o `endpoint` do `API server` através de um `IP` fixo.
 Nesse modelo, temos uma `subnet` pública, que é utilizada para alocação do `API server`, futuramente o `load balancer` que será utilizado como `ingress` no cluster, e uma `subnet` privada, para alocação dos `worker nodes`.
 Para garantir a segurança, são provisionados `NSGs` (network security groups) em cada recurso ao invés de `secutiry lists` a nível de `subnet`, sendo assim,
-modificamos o `security list` padrão que é criado junto com a `VCN`, para liberar todo o tráfico.
+modificamos o `security list` padrão que é criado junto com a `VCN`, para liberar todo o tráfego.
 OBS: Essa arquitetura está utilizando dos recursos **always free** da oracle, e **não é recomendado para produção** devido utilização da arquitetura `ARM` nos `worker nodes`.
 
 ## Recursos provisionados e roadmap
