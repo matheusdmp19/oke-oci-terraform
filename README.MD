@@ -113,7 +113,7 @@ terraform apply
 ```shell
 export OKE_CLUSTER_ID=$(terraform output -raw cluster_id)
 oci ce cluster create-kubeconfig --cluster-id $OKE_CLUSTER_ID --file $HOME/.kube/config \
---region $TF_VAR_region --token-version 2.0.0 --kube-endpoint PUBLIC_ENDPOINT
+--region sa-saopaulo-1 --token-version 2.0.0 --kube-endpoint PUBLIC_ENDPOINT
 ```
 
 ## Destruindo o ambiente
